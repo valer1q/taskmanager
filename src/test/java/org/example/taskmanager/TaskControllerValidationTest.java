@@ -3,7 +3,7 @@ package org.example.taskmanager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,13 +18,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class TaskControllerValidationTest {
+public class TaskControllerValidationTest {
 
     @Autowired MockMvc mockMvc;
     @Autowired ObjectMapper objectMapper;
 
     @Test
-    void shouldReturn400WhenTitleIsEmpty() throws Exception {
+    public void shouldReturn400WhenTitleIsEmpty() throws Exception {
         TaskRequest request = new TaskRequest("", null, TaskStatus.TODO, null);
 
         mockMvc.perform(post("/tasks")
@@ -36,7 +36,7 @@ class TaskControllerValidationTest {
     }
 
     @Test
-    void shouldReturn400WhenDueDateInPast() throws Exception {
+    public void shouldReturn400WhenDueDateInPast() throws Exception {
         TaskRequest request = new TaskRequest("Valid title", null, TaskStatus.TODO, LocalDateTime.now().minusDays(1));
 
         mockMvc.perform(post("/tasks")
@@ -47,7 +47,7 @@ class TaskControllerValidationTest {
     }
 
     @Test
-    void shouldReturn404WhenTaskNotFound() throws Exception {
+    public void shouldReturn404WhenTaskNotFound() throws Exception {
         mockMvc.perform(get("/tasks/" + UUID.randomUUID()))
                 .andExpect(status().isNotFound());
     }
